@@ -26,7 +26,7 @@ fs.readFile("config.json", {encoding: 'utf-8'}, function(configReadError, data) 
         next();
     });
     
-    server.setFileSystem('/', new webdav.PhysicalFileSystem('sync'), (success) => {
+    server.setFileSystem('/sync', new webdav.PhysicalFileSystem('sync'), (success) => {
         server.start(() => console.log('READY'));
     });
     
