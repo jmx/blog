@@ -9,7 +9,7 @@ fs.readFile("config.json", {encoding: 'utf-8'}, function(configReadError, data) 
     const user = userManager.addUser(credentials.username, credentials.password, true)
     const privilegeManager = new webdav.SimplePathPrivilegeManager();
 
-    privilegeManager.setRights(user, '/', ['all']);
+    privilegeManager.setRights(user, '/sync', ['all']);
 
     const server = new webdav.WebDAVServer({
         port: 1900,
