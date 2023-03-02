@@ -16,21 +16,26 @@ fs.readFile("config.json", {encoding: 'utf-8'}, function(configReadError, data) 
         httpAuthentication: new webdav.HTTPBasicAuthentication(userManager),
         privilegeManager: privilegeManager,
         requireAuthentification: true,
-        rootFileSystem: new webdav.PhysicalFileSystem('sync')
+    });
+
+
+    server.beforeRequest((ctx, next) => {
+        ctx.prefixUri = function () {
+            const scheme = (this.headers.host === 'localhost') ? 'http' : 'https';
+                return scheme + '://' + this.headers.host.replace('/', '') + (this.rootPath ? this.rootPath : '');
+            };
+        next();
     });
 
     server.afterRequest((arg, next) => {
         // Display the method, the URI, the returned status code and the returned message
-        console.log('>>', arg.request.method, arg.requested.uri, '>', arg.response.statusCode, arg.response.statusMessage);
+        console.log(arg.request.method, arg.requested.uri, '>', arg.response.statusCode, arg.response.statusMessage);
         // If available, display the body of the response
-        // console.log(arg.responseBody);
         next();
     });
 
-    server.start(() => console.log('READY'));
 
-    // server.setFileSystem('sync', new webdav.PhysicalFileSystem('sync'), (success) => {
-        // server.start(() => console.log('READY'));
-    // });
-    // 
+    server.setFileSystem('/', new webdav.PhysicalFileSystem('sync'), (success) => {
+        server.start(() => console.log('webdav server ready'));
+    }); 
 });
