@@ -4,7 +4,7 @@ const webdav = require("webdav-server").v2;
 module.exports = function app() {
     fs.readFile("config.json", {encoding: 'utf-8'}, function(configReadError, data) {
         if (configReadError) throw configReadError;
-    
+
         const userManager = new webdav.SimpleUserManager();
         const credentials = JSON.parse(data);
 
@@ -22,10 +22,9 @@ module.exports = function app() {
             requireAuthentification: true,
         });
     
-    
         server.beforeRequest((ctx, next) => {
             ctx.prefixUri = function () {
-                const scheme = (this.headers.host === 'localhost') ? 'http' : 'https';
+                const scheme = (this.headers.host.split(":")[0] === 'localhost') ? 'http' : 'https';
                     return scheme + '://' + this.headers.host.replace('/', '') + (this.rootPath ? this.rootPath : '');
                 };
             next();
