@@ -1,3 +1,3 @@
-import {app} from "./sync_app.js";
+const app = require("./sync_app.js");
 
 app();

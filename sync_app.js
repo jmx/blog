@@ -1,7 +1,7 @@
-import { v2 as webdav } from 'webdav-server';
-import fs from 'fs';
+const fs = require("fs");
+const webdav = require("webdav-server").v2;
 
-export function app() {
+module.exports = function app() {
     fs.readFile("config.json", {encoding: 'utf-8'}, function(configReadError, data) {
         if (configReadError) throw configReadError;
     
@@ -13,7 +13,6 @@ export function app() {
         credentials.forEach((userCredentials) => {
             const user = userManager.addUser(userCredentials.username, userCredentials.password, true)
             privilegeManager.setRights(user, '/', ['all']);
-            console.log(user);
         });
     
         const server = new webdav.WebDAVServer({
@@ -44,4 +43,4 @@ export function app() {
             server.start(() => console.log('webdav server ready'));
         }); 
     });
-}
+};
