@@ -7,10 +7,14 @@ export function app() {
     
         const userManager = new webdav.SimpleUserManager();
         const credentials = JSON.parse(data);
-        const user = userManager.addUser(credentials.username, credentials.password, true)
+
         const privilegeManager = new webdav.SimplePathPrivilegeManager();
-    
-        privilegeManager.setRights(user, '/', ['all']);
+
+        credentials.forEach((userCredentials) => {
+            const user = userManager.addUser(userCredentials.username, userCredentials.password, true)
+            privilegeManager.setRights(user, '/', ['all']);
+            console.log(user);
+        });
     
         const server = new webdav.WebDAVServer({
             port: 1900,
