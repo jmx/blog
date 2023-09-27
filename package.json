@@ -6,6 +6,8 @@
   "main": "index.js",
   "author": "James Macpherson",
   "dependencies": {
+    "markdown-it": "^13.0.2",
+    "slugify": "^1.6.6",
     "webdav-server": "^2.6.2"
   }
 }
