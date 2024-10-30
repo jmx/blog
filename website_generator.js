@@ -23,7 +23,6 @@
 const fs = require('fs');
 const path = require('path');
 const MarkdownIt = require('markdown-it');
-const yaml = require('yaml');
 
 const types = {
     '1': 'note',
